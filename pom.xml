@@ -34,26 +34,53 @@
 		<url>https://github.com/homeaway/jenkins-spock</url>
 		<connection>scm:git:git@github.com:homeaway/jenkins-spock.git</connection>
 		<developerConnection>scm:git:git@github.com:homeaway/jenkins-spock.git</developerConnection>
-		<tag>HEAD</tag>
+		<!--		<tag>HEAD</tag>-->
 	</scm>
+
+	<!--	<repositories>-->
+	<!--		<repository>-->
+	<!--			<id>jenkins-releases</id>-->
+	<!--			<name>Jenkins Releases</name>-->
+	<!--			<url>http://repo.jenkins-ci.org/releases</url>-->
+	<!--		</repository>-->
+	<!--	</repositories>-->
+
+	<!--	<distributionManagement>-->
+	<!--		<snapshotRepository>-->
+	<!--			<id>ossrh</id>-->
+	<!--			<url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+	<!--		</snapshotRepository>-->
+	<!--		<repository>-->
+	<!--			<id>ossrh</id>-->
+	<!--			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+	<!--		</repository>-->
+	<!--	</distributionManagement>-->
 
 	<repositories>
 		<repository>
-			<id>jenkins-releases</id>
-			<name>Jenkins Releases</name>
-			<url>http://repo.jenkins-ci.org/releases</url>
+			<id>accolade-snapshots</id>
+			<name>accolade-snapshots</name>
+			<url>https://accolade.jfrog.io/accolade/libs-snapshots-local</url>
+		</repository>
+		<repository>
+			<id>accolade-releases</id>
+			<name>accolade-releases</name>
+			<url>https://accolade.jfrog.io/accolade/libs-releases-local</url>
 		</repository>
 	</repositories>
 
 	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
 		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<id>accolade-releases</id>
+			<name>accolade-releases</name>
+			<url>https://accolade.jfrog.io/accolade/libs-releases-local</url>
 		</repository>
+		<snapshotRepository>
+			<id>accolade-snapshots</id>
+			<name>accolade-snapshots</name>
+			<url>https://accolade.jfrog.io/accolade/libs-snapshots-local</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<properties>
@@ -77,18 +104,18 @@
 		<nexusStaging.pluginVersion>1.6.7</nexusStaging.pluginVersion>
 		<release.pluginVersion>2.5.3</release.pluginVersion>
 		<resources.pluginVersion>3.1.0</resources.pluginVersion>
-		<scm.pluginVersion>1.11.2</scm.pluginVersion>
+		<scm.pluginVersion>1.10.0</scm.pluginVersion>
 		<site.pluginVersion>3.7.1</site.pluginVersion>
 		<source.pluginVersion>2.2.1</source.pluginVersion>
 		<surefire.pluginVersion>2.22.0</surefire.pluginVersion>
 
 		<!-- Groovy versions -->
-		<groovy.core.version>2.4.11</groovy.core.version>
+		<groovy.core.version>3.0.21</groovy.core.version>
 		<groovy.spock.version>1.1-groovy-2.4</groovy.spock.version>
 		<groovy.gmaven.pluginVersion>1.6.1</groovy.gmaven.pluginVersion>
 
 		<!-- metaprogramming & testing versions -->
-		<cglib.version>3.2.7</cglib.version>
+		<cglib.version>3.2.9</cglib.version>
 		<objenesis.version>2.6</objenesis.version>
 
 		<!-- jenkins software versions -->
@@ -419,16 +446,22 @@
 
 		<!-- 'parallel' step comes from workflow-cps -->
 
-		<!-- 
+		<!--
 			for mocking the Jenkins singleton outside Spock
 			Only done to verify that IF that is done properly, THEN
-			jenkins-spock can use that object 
+			jenkins-spock can use that object
 		-->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.10.19</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tukaani</groupId>
+			<artifactId>xz</artifactId>
+			<version>1.9</version>
 		</dependency>
 
 	</dependencies>
@@ -477,7 +510,7 @@
 					<artifactId>maven-dependency-plugin</artifactId>
 					<configuration>
 						<usedDependencies>
-							<!-- these will be used by Groovy code, when the included test utilities 
+							<!-- these will be used by Groovy code, when the included test utilities
 								are spun up during a test run -->
 							<usedDependency>cglib:cglib-nodep</usedDependency>
 							<usedDependency>junit:junit</usedDependency>
@@ -520,6 +553,9 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
 					<version>${gpg.pluginVersion}</version>
+					<configuration>
+						<skip>true</skip>
+					</configuration>
 					<executions>
 						<execution>
 							<id>sign-artifacts</id>
