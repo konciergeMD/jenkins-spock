@@ -38,14 +38,14 @@ public class ClassWithMissingHandlersSpec extends JenkinsPipelineSpecification {
 	
 	def "normal methods work normally" () {
 		when:
-			clazz.helloNode( "nodeType" ) {
+			clazz.helloNode( "nodeType" , {
 				echo( "inside node" )
-			}
+			})
 		then:
 			1 * getPipelineMock( "node" )("nodeType", _)
 			1 * getPipelineMock( "echo" )("Hello from a [nodeType] node!")
 			1 * getPipelineMock( "echo" )("Goodbye from a [nodeType] node!")
-			1 * getPipelineMock( "echo" )("inside node")
+		    1 * getPipelineMock( "echo" )("inside node")
 	}
 	
 	def "truly missing methods raise exception" () {
