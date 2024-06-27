@@ -12,31 +12,41 @@
 	<description>Testing a Jenkinsfile with Spock</description>
 	
 	<repositories>
+<!--		<repository>-->
+<!--			<id>jenkins-releases</id>-->
+<!--			<name>Jenkins Releases</name>-->
+<!--			<url>http://repo.jenkins-ci.org/releases</url>-->
+<!--		</repository>-->
+<!--		<repository>-->
+<!--			<id>jenkins-public</id>-->
+<!--			<name>Jenkins Public</name>-->
+<!--			<url>http://repo.jenkins-ci.org/public</url>-->
+<!--		</repository>-->
 		<repository>
-			<id>jenkins-releases</id>
-			<name>Jenkins Releases</name>
-			<url>http://repo.jenkins-ci.org/releases</url>
+			<id>accolade-snapshots</id>
+			<name>accolade-snapshots</name>
+			<url>https://accolade.jfrog.io/accolade/libs-snapshots-local</url>
 		</repository>
 		<repository>
-			<id>jenkins-public</id>
-			<name>Jenkins Public</name>
-			<url>http://repo.jenkins-ci.org/public</url>
+			<id>accolade-releases</id>
+			<name>accolade-releases</name>
+			<url>https://accolade.jfrog.io/accolade/libs-releases-local</url>
 		</repository>
 	</repositories>
 	
 	<properties>
 		
-		<groovy.core.version>2.4.11</groovy.core.version>
-		<groovy.spock.version>1.1-groovy-2.4</groovy.spock.version>
-		<groovy.gmaven.pluginVersion>1.6.1</groovy.gmaven.pluginVersion>
+		<groovy.core.version>2.4.21</groovy.core.version>
+		<groovy.spock.version>1.3-groovy-2.4</groovy.spock.version>
+		<groovy.gmaven.pluginVersion>1.6.2</groovy.gmaven.pluginVersion>
 		
-		<jenkins.version>2.102</jenkins.version>
+		<jenkins.version>2.452</jenkins.version>
 		<jenkins.servlet.version>3.1.0</jenkins.servlet.version>
 		<jenkins.symbol.version>1.10</jenkins.symbol.version>
 		<jenkins.workflow.cps.version>2.36</jenkins.workflow.cps.version>
 		<jenkins.workflow.step.version>2.10</jenkins.workflow.step.version>
 		
-		<jenkins-spock.version>2.1.5</jenkins-spock.version>
+		<jenkins-spock.version>2.1.6-SNAPSHOT</jenkins-spock.version>
 		
 		<junit.version>4.12</junit.version>
 		
@@ -58,6 +68,14 @@
 				<artifactId>guava</artifactId>
 				<version>20.0</version>
 			</dependency>
+
+			<dependency>
+				<groupId>io.jenkins.tools.bom</groupId>
+				<artifactId>bom-2.452.x</artifactId>
+				<version>3135.v6d6c1f6b_3572</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -69,6 +87,7 @@
 			<version>${jenkins-spock.version}</version>
 			<scope>test</scope>
 		</dependency>
+
 		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -102,17 +121,21 @@
 			<artifactId>jenkins-core</artifactId>
 			<version>${jenkins.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.groovy</groupId>
+					<artifactId>groovy-all</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jenkins-ci.plugins.workflow</groupId>
 			<artifactId>workflow-step-api</artifactId>
-			<version>${jenkins.workflow.step.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jenkins-ci.plugins.workflow</groupId>
 			<artifactId>workflow-cps</artifactId>
-			<version>${jenkins.workflow.cps.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -124,9 +147,8 @@
 		
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
+			<artifactId>groovy</artifactId>
 			<version>${groovy.core.version}</version>
-			<scope>test</scope>
 		</dependency>
 		
 		<dependency>
@@ -158,7 +180,6 @@
 			<!-- provides the sh() pipeline step -->
 			<groupId>org.jenkins-ci.plugins.workflow</groupId>
 			<artifactId>workflow-durable-task-step</artifactId>
-			<version>2.21</version>
 			<scope>test</scope>
 		</dependency>
 		
@@ -166,7 +187,6 @@
 			<!-- provides the slackSend() pipeline step -->
 			<groupId>org.jenkins-ci.plugins</groupId>
 			<artifactId>slack</artifactId>
-			<version>2.3</version>
 			<scope>test</scope>
 		</dependency>
 		
@@ -174,7 +194,6 @@
 			<!-- provides stage() step -->
 			<groupId>org.jenkins-ci.plugins</groupId>
 			<artifactId>pipeline-stage-step</artifactId>
-			<version>2.3</version>
 			<scope>test</scope>
 		</dependency>
 		
@@ -182,7 +201,6 @@
 			<!-- provides sshagent() step -->
 			<groupId>org.jenkins-ci.plugins</groupId>
 			<artifactId>ssh-agent</artifactId>
-			<version>1.16</version>
 			<scope>test</scope>
 		</dependency>
 		
@@ -244,6 +262,13 @@
 							</configuration>
 						</execution>
 					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.groovy</groupId>
+							<artifactId>groovy</artifactId>
+							<version>${groovy.core.version}</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
