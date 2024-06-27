@@ -34,6 +34,7 @@ public class ClassWithMissingHandlersSpec extends JenkinsPipelineSpecification {
 	
 	def setup() {
 		clazz = new ClassWithMissingHandlers()
+		explicitlyMockPipelineVariable( "DefinedGlobalVariable" )
 	}
 	
 	def "normal methods work normally" () {
@@ -79,10 +80,14 @@ public class ClassWithMissingHandlersSpec extends JenkinsPipelineSpecification {
 	}
 	
 	def "missing pipeline vars hit the mock" () {
-		setup:
-			explicitlyMockPipelineVariable( "DefinedGlobalVariable" )
-			def real_global_var = clazz.DefinedGlobalVariable
-		expect:
+		def real_global_var
+
+//		setup:
+//			def vr = explicitlyMockPipelineVariable( "DefinedGlobalVariable" )
+		when:
+			//explicitlyMockPipelineVariable( "DefinedGlobalVariable" )
+			real_global_var = clazz.DefinedGlobalVariable
+		then:
 			real_global_var != null
 			real_global_var instanceof PipelineVariableImpersonator
 	}
