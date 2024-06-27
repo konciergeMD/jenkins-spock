@@ -25,10 +25,11 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ScanResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.github.classgraph.ClassGraph;
 
 /**
  * Search through classes in the entire classpath for Jenkins Pipeline extensions.
@@ -44,14 +45,19 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 	@Override
 	public Set<Class<?>> getClassesOfTypeInPackage(Class<?> _supertype, Optional<String> _package) {
 
+		List<String> classnames;
+		try (
+				ScanResult scanResult = new ClassGraph()
+						.acceptPackages(_package.orElse(""))
+						.scan()
+		) {
+			classnames = scanResult
+					.getAllClasses()
+					.filter(ci -> ci.extendsSuperclass(_supertype.getName()))
+					.getNames();
+		}
+
 		Set<Class<?>> classes = new HashSet<>();
-
-		List<String> classnames = new ClassGraph()
-			.enableAnnotationInfo()
-			.enableClassInfo()
-			.acceptPackages(_package.orElse(""))
-			.scan().getAllStandardClasses().getNames();
-
 		HashMap<String, Throwable> failures = new HashMap<>();
 
 		for(String classname: classnames) {
@@ -60,7 +66,7 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 
 			try {
 				clazz = Class.forName( classname );
-			} catch( ClassNotFoundException e ) {
+			} catch( ClassNotFoundException | NoClassDefFoundError e ) {
 				failures.put( classname, e );
 				continue;
 			} catch( Throwable t ) {
@@ -81,10 +87,10 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 				}
 			} else {
 				LOG.warn(
-					"Failed to get some classes of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
-					_supertype,
-					_package,
-					failures.keySet() );
+						"Failed to get some classes of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
+						_supertype,
+						_package,
+						failures.keySet() );
 			}
 		}
 
@@ -94,15 +100,21 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 	@Override
 	public Set<Class<?>> getClassesWithAnnotationOfTypeInPackage( Class<? extends Annotation> _annotation, Class<?> _supertype, Optional<String> _package) {
 
+		List<String> annotated_classnames;
+		try (
+				ScanResult scanResult = new ClassGraph()
+						.acceptPackages(_package.orElse(""))
+						.enableAnnotationInfo()
+						.scan();
+		) {
+			annotated_classnames = scanResult
+					.getClassesWithAnnotation(_annotation.getName())
+					.filter(ci -> ci.extendsSuperclass(_supertype.getName()))
+					.getNames();
+		}
+
 		Set<Class<?>> annotated_classes = new HashSet<>();
-
 		HashMap<String, Throwable> failures = new HashMap<>();
-
-		List<String> annotated_classnames = new ClassGraph()
-			.enableAnnotationInfo()
-			.enableClassInfo()
-			.acceptPackages(_package.orElse(""))
-			.scan().getClassesWithAnnotation( _annotation.getName() ).getNames();
 
 		for(String classname: annotated_classnames) {
 
@@ -131,11 +143,11 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 				}
 			} else {
 				LOG.warn(
-					"Failed to get some classes annotated with [{}] of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
-					_annotation,
-					_supertype,
-					_package,
-					failures.keySet() );
+						"Failed to get some classes annotated with [{}] of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
+						_annotation,
+						_supertype,
+						_package,
+						failures.keySet() );
 			}
 		}
 

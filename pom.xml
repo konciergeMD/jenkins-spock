@@ -101,7 +101,7 @@
 		<install.pluginVersion>2.5.2</install.pluginVersion>
 		<invoker.pluginVersion>3.2.1</invoker.pluginVersion>
 		<jar.pluginVersion>3.1.0</jar.pluginVersion>
-		<javadoc.pluginVersion>3.0.1</javadoc.pluginVersion>
+<!--		<javadoc.pluginVersion>3.0.1</javadoc.pluginVersion>-->
 		<nexusStaging.pluginVersion>1.6.7</nexusStaging.pluginVersion>
 		<release.pluginVersion>2.5.3</release.pluginVersion>
 		<resources.pluginVersion>3.1.0</resources.pluginVersion>
@@ -233,50 +233,50 @@
 				</pluginManagement>
 			</build>
 		</profile>
-		<profile>
-			<!-- publish JavaDoc & GroovyDoc to github-pages during a maven release -->
-			<id>gh-pages-javadoc</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-				</property>
-			</activation>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-scm-publish-plugin</artifactId>
-							<version>1.1</version>
-							<executions>
-								<execution>
-									<id>publish-docs</id>
-									<phase>deploy</phase>
-									<goals>
-										<goal>publish-scm</goal>
-									</goals>
-									<configuration>
-										<dryRun>${metadata.isPom}</dryRun>
-										<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
-										<checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
-										<content>${project.reporting.outputDirectory}/apidocs</content>
-										<skipDeletedFiles>true</skipDeletedFiles>
-										<pubScmUrl>${project.scm.connection}</pubScmUrl>
-										<scmBranch>gh-pages</scmBranch>
-									</configuration>
-								</execution>
-							</executions>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-scm-publish-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+<!--		<profile>-->
+<!--			&lt;!&ndash; publish JavaDoc & GroovyDoc to github-pages during a maven release &ndash;&gt;-->
+<!--			<id>gh-pages-javadoc</id>-->
+<!--			<activation>-->
+<!--				<property>-->
+<!--					<name>performRelease</name>-->
+<!--				</property>-->
+<!--			</activation>-->
+<!--			<build>-->
+<!--				<pluginManagement>-->
+<!--					<plugins>-->
+<!--						<plugin>-->
+<!--							<groupId>org.apache.maven.plugins</groupId>-->
+<!--							<artifactId>maven-scm-publish-plugin</artifactId>-->
+<!--							<version>1.1</version>-->
+<!--							<executions>-->
+<!--								<execution>-->
+<!--									<id>publish-docs</id>-->
+<!--									<phase>deploy</phase>-->
+<!--									<goals>-->
+<!--										<goal>publish-scm</goal>-->
+<!--									</goals>-->
+<!--									<configuration>-->
+<!--										<dryRun>${metadata.isPom}</dryRun>-->
+<!--										<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>-->
+<!--										<checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>-->
+<!--										<content>${project.reporting.outputDirectory}/apidocs</content>-->
+<!--										<skipDeletedFiles>true</skipDeletedFiles>-->
+<!--										<pubScmUrl>${project.scm.connection}</pubScmUrl>-->
+<!--										<scmBranch>gh-pages</scmBranch>-->
+<!--									</configuration>-->
+<!--								</execution>-->
+<!--							</executions>-->
+<!--						</plugin>-->
+<!--					</plugins>-->
+<!--				</pluginManagement>-->
+<!--				<plugins>-->
+<!--					<plugin>-->
+<!--						<groupId>org.apache.maven.plugins</groupId>-->
+<!--						<artifactId>maven-scm-publish-plugin</artifactId>-->
+<!--					</plugin>-->
+<!--				</plugins>-->
+<!--			</build>-->
+<!--		</profile>-->
 	</profiles>
 
 	<dependencies>
@@ -463,11 +463,11 @@
 			<version>1.10.19</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.tukaani</groupId>
-			<artifactId>xz</artifactId>
-			<version>1.9</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.tukaani</groupId>-->
+<!--			<artifactId>xz</artifactId>-->
+<!--			<version>1.9</version>-->
+<!--		</dependency>-->
 
 	</dependencies>
 
@@ -475,11 +475,11 @@
 		<pluginManagement>
 			<plugins>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>${assembly.pluginVersion}</version>
-					<executions>
+<!--				<plugin>-->
+<!--					<groupId>org.apache.maven.plugins</groupId>-->
+<!--					<artifactId>maven-assembly-plugin</artifactId>-->
+<!--					<version>${assembly.pluginVersion}</version>-->
+<!--					<executions>-->
 <!--						<execution>-->
 <!--							<id>javadoc</id>-->
 <!--							<phase>package</phase>-->
@@ -492,8 +492,8 @@
 <!--								</descriptors>-->
 <!--							</configuration>-->
 <!--						</execution>-->
-					</executions>
-				</plugin>
+<!--					</executions>-->
+<!--				</plugin>-->
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -584,14 +584,14 @@
 					<version>${jar.pluginVersion}</version>
 				</plugin>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${javadoc.pluginVersion}</version>
-					<configuration>
-						<skip>true</skip>
-					</configuration>
-				</plugin>
+<!--				<plugin>-->
+<!--					<groupId>org.apache.maven.plugins</groupId>-->
+<!--					<artifactId>maven-javadoc-plugin</artifactId>-->
+<!--					<version>${javadoc.pluginVersion}</version>-->
+<!--					<configuration>-->
+<!--						<skip>true</skip>-->
+<!--					</configuration>-->
+<!--				</plugin>-->
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -669,8 +669,7 @@
 							<configuration>
 								<testSourceDirectory>src/test/groovy</testSourceDirectory>
 								<includes>
-									<include>**/*Spec
-									</include>
+									<include>**/*Spec</include>
 								</includes>
 								<useManifestOnlyJar>false</useManifestOnlyJar>
 								<systemPropertyVariables>
@@ -727,6 +726,7 @@
 <!--							</goals>-->
 <!--							<phase>prepare-package</phase>-->
 <!--							<configuration>-->
+<!--								-->
 <!--								<links>-->
 <!--									<link>-->
 <!--										<href>https://docs.oracle.com/javase/8/docs/api/</href>-->
@@ -767,9 +767,6 @@
 							<groupId>org.codehaus.groovy</groupId>
 							<artifactId>groovy</artifactId>
 							<version>${groovy.core.version}</version>
-
-							<!--            <scope>provided</scope>-->
-							<!--            <type>pom</type>-->
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -844,10 +841,10 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-assembly-plugin</artifactId>-->
+<!--			</plugin>-->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
