@@ -28,15 +28,11 @@ import com.homeaway.devtools.jenkins.testing.JenkinsPipelineSpecification
 public class ClassWithNoMethodsSpec extends JenkinsPipelineSpecification {
 	
 	def "calling nonexistent method"() {
-
-// Commenting out failing test
-//		given:
-//			ClassToTest myVar = new ClassToTest()
-//		when:
-//			myVar.nonexistentMethod()
-//		then:
-//			thrown IllegalStateException
-
-		assert true
+		given:
+			ClassToTest myVar = new ClassToTest()
+		when:
+			myVar.nonexistentMethod()
+		then:
+			thrown IllegalStateException
 	}
 }
