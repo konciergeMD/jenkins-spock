@@ -54,7 +54,7 @@ public class ClassWithMissingHandlersSpec extends JenkinsPipelineSpecification {
 		then:
 			thrown IllegalStateException
 	}
-	
+
 	def "missing pipeline steps hit the mock" () {
 		when:
 			clazz.stage("someStage") {

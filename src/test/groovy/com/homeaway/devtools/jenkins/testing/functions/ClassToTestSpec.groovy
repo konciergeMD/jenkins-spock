@@ -42,7 +42,7 @@ public class ClassToTestSpec extends JenkinsPipelineSpecification {
 			1 * getPipelineMock( "echo" )("Goodbye from a [nodeType] node!")
 			1 * getPipelineMock( "echo" )("inside node")
 	}
-	
+
 	def "calling method with correct parameters"() {
 		given:
 			ClassToTest myVar = new ClassToTest()
