@@ -4,21 +4,8 @@ metadata:
   name: lib-test-pod
   annotations:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
-  labels:
-    extra-cpu: "true"
 
 spec:
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-              - key: extra-cpu
-                operator: In
-                values:
-                  - true
-          topologyKey: kubernetes.io/hostname
-
   containers:
     - name: java-build
       image: maven:3.8.6-openjdk-11-slim
